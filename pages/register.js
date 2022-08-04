@@ -24,7 +24,7 @@ const Register = () => {
         setOk(res.ok);
       toast.success("Successfully registered")})
       .catch((err) => {  console.log(err)
-      toast.error(err)
+      toast.error(err.response.data)
       });
   };
 
