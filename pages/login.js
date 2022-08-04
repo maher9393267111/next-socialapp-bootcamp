@@ -71,6 +71,7 @@ const Login = () => {
         </div>
       </div>
 
+
       <div className="row">
         <div className="col">
           <p className="text-center">
@@ -81,6 +82,18 @@ const Login = () => {
           </p>
         </div>
       </div>
+
+
+      <div className="row">
+        <div className="col text-center">
+          <Link href="/forget-pass">
+            <a className="text-danger">Forgot password</a>
+          </Link>
+        </div>
+      </div>
+
+
+
     </div>
   );
 };
