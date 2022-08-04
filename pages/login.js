@@ -1,79 +1,72 @@
-const Register = () => {
-    return (
-      <div className="container-fluid">
-        <div className="row py-5 bg-secondary text-light">
-          <div className="col text-center">
-            <h1>Register</h1>
-          </div>
-        </div>
-  
-        <div className="row py-5">
-          <div className="col-md-6 offset-md-3">
-            <form>
-              <div className="form-group p-2">
-                <small>
-                  <label className="text-muted">Your name</label>
-                </small>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter name"
-                />
-              </div>
-  
-              <div className="form-group p-2">
-                <small>
-                  <label className="text-muted">Email address</label>
-                </small>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Enter name"
-                />
-              </div>
-  
-              <div className="form-group p-2">
-                <small>
-                  <label className="text-muted">Password</label>
-                </small>
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Enter name"
-                />
-              </div>
-  
-              <div className="form-group p-2">
-                <small>
-                  <label className="text-muted">Pick a question</label>
-                </small>
-                <select className="form-control">
-                  <option>What is your favourite color?</option>
-                  <option>What is your best friends name?</option>
-                  <option>What city you were born?</option>
-                </select>
-  
-                <small className="form-text text-muted">
-                  You can use this to reset your password if forgotten.
-                </small>
-              </div>
-  
-              <div className="form-group p-2">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Write your answer here"
-                />
-              </div>
-  
-              <div className="form-group p-2">
-                <button className="btn btn-primary col-12">Submit</button>
-              </div>
-            </form>
-          </div>
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { Modal } from "antd";
+import Link from "next/link";
+import AuthForm from "../components/forms/AuthForm";
+import { useRouter } from "next/router";
+
+const Login = () => {
+  const [email, setEmail] = useState("ryan@gmail.com");
+  const [password, setPassword] = useState("rrrrrr");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // console.log(name, email, password, secret);
+      setLoading(true);
+      const { data } = await axios.post(
+        `/api/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
+      console.log(data);
+      // router.push("/");
+    } catch (err) {
+      toast.error(err.response.data);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container-fluid">
+      <div className="row py-5 text-light bg-default-image">
+        <div className="col text-center">
+          <h1>Login</h1>
         </div>
       </div>
-    );
-  };
-  
-  export default Register;
+
+      <div className="row py-5">
+        <div className="col-md-6 offset-md-3">
+          <AuthForm
+            handleSubmit={handleSubmit}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            loading={loading}
+            page="login"
+          />
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col">
+          <p className="text-center">
+            Not yet registered?{" "}
+            <Link href="/register">
+              <a>Register</a>
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
