@@ -26,6 +26,8 @@ const Login = () => {
         }
       );
       console.log(data);
+      setLoading(false);
+      toast.success("Successfully logged in");
       // router.push("/");
     } catch (err) {
       toast.error(err.response.data);
