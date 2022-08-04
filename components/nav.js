@@ -66,7 +66,7 @@ const Nav = () => {
                 current === "/register" && "active"
               }`}
             >
-              Register
+               Registes
             </a>
           </Link>
         </>
