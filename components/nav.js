@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 const Nav = () => {
   const [current, setCurrent] = useState("");
-  const [state, setState] = useContext(UserContext);
+  const [state, setState,logout] = useContext(UserContext);
 
   useEffect(() => {
     process.window && setCurrent(window.location.pathname);
@@ -13,9 +13,9 @@ const Nav = () => {
 
   const router = useRouter();
 
-  const logout = () => {
-    window.localStorage.removeItem("auth");
-    setState(null);
+  const logoutfunc = () => {
+ 
+    logout();
     router.push("/login");
   };
 
@@ -44,7 +44,7 @@ const Nav = () => {
             </a>
           </Link>
 
-          <a onClick={logout} className="nav-link text-light">
+          <a onClick={logoutfunc} className="nav-link text-light">
             Logout
           </a>
         </>

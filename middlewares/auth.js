@@ -1,6 +1,7 @@
 
 import jwt from 'jsonwebtoken';
 import  cookies from 'next-cookies'
+import { useRouter } from 'next/router'
  export  const isAuth = async (req, res, next) => {
     // getting headers from  request to this method
     const { authorization } = req.headers;
@@ -30,15 +31,29 @@ import  cookies from 'next-cookies'
         const allCookies = cookies(ctx);
         console.log('ALLCOOKIES',allCookies);
 
-        if(!allCookies.auth)
-            return console.log('no auth cookie');
-            //  ctx.res.writeHead(302, {
-            //     Location: '/login'
-            // }).end();
+        if(allCookies.auth) {
 
-        return resolve({
-        
+          return resolve({
+       
             token: allCookies.auth
         });
+
+        }
+        else if (!allCookies.auth) {
+
+          // remove token from cookies
+         // res.clearCookie('auth');
+
+          return  ctx.res.writeHead(302, {
+             Location: '/login'
+         }).end();
+    
+
+        }
+
+      
+        
+
+       
     });
 }

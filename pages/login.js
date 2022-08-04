@@ -7,6 +7,7 @@ import AuthForm from "../components/forms/AuthForm";
 import { useRouter } from "next/router";
 import { UserContext } from "../context";
 import Cookie from 'js-cookie';
+
 const Login = () => {
   const [email, setEmail] = useState("ryan@gmail.com");
   const [password, setPassword] = useState("rrrrrr");
@@ -85,3 +86,4 @@ const Login = () => {
 };
 
 export default Login;
+
