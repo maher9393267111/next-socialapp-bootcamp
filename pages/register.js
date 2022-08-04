@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import {toast} from 'react-toastify'
 
 const Register = () => {
   const [name, setName] = useState("");
