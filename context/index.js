@@ -1,17 +1,23 @@
 import { useState, createContext,useEffect } from "react";
-
+import axios from 'axios'
+import Cookies from 'store-js'
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [state, setState] = useState({
-    user: {},
-    token: "",
+     user: {},  
+      token: ''
+   
   });
 
 
   useEffect(() => {
-    setState(JSON.parse(window.localStorage.getItem("auth")));
+
+    setState(JSON.parse(localStorage.getItem('auth')))
+
   }, []);
+
+
 
 
 

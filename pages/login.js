@@ -6,6 +6,7 @@ import Link from "next/link";
 import AuthForm from "../components/forms/AuthForm";
 import { useRouter } from "next/router";
 import { UserContext } from "../context";
+import Cookie from 'js-cookie';
 const Login = () => {
   const [email, setEmail] = useState("ryan@gmail.com");
   const [password, setPassword] = useState("rrrrrr");
@@ -26,6 +27,7 @@ const Login = () => {
         }
       );
 
+      console.log(data);
          // update context
          setState({
           user: data.user,
@@ -33,6 +35,7 @@ const Login = () => {
         });
         // save in local storage
         window.localStorage.setItem("auth", JSON.stringify(data));
+        Cookie.set('auth', data.token);
 
 
       console.log(data);
@@ -40,7 +43,7 @@ const Login = () => {
       toast.success("Successfully logged in");
       // router.push("/");
     } catch (err) {
-      toast.error(err.response.data);
+      toast.error(err?.response?.data);
       setLoading(false);
     }
   };

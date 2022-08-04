@@ -5,8 +5,17 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "antd/dist/antd.css";
 import '../styles/globals.css'
+import React, {useState, useEffect} from 'react';
 import { UserProvider } from "../context";
 function MyApp({ Component, pageProps }) {
+
+
+  const [isSSR, setIsSSR] = useState(true);
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);  
+
+
   return (
     <UserProvider>
     <Head>

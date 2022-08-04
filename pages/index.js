@@ -3,6 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useContext } from "react";
 import { UserContext } from "../context";
+
 export default function Home() {
 
   const [state, setState] = useContext(UserContext);
@@ -18,7 +19,8 @@ export default function Home() {
 
    <div>
     <h1>hello
-    {JSON.stringify(state)}
+ 
+
 
 
     </h1>
