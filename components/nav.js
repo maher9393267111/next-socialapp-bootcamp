@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { UserContext } from "../context";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import axios from "axios";
 
-const Nav = () => {
+const Nav = ({}) => {
   const [current, setCurrent] = useState("");
   const [state, setState,logout] = useContext(UserContext);
 
@@ -19,11 +21,20 @@ const Nav = () => {
     router.push("/login");
   };
 
+
+
+
+
+
+console.log('state',state)
+
+
   return (
     <nav
       className="nav d-flex justify-content-between"
       style={{ backgroundColor: "blue" }}
     >
+      {state?.token === null && 'hfffffff' }
       <Link href="/">
         <a
           className={`nav-link text-light logo ${current === "/" && "active"}`}
@@ -32,7 +43,8 @@ const Nav = () => {
         </a>
       </Link>
 
-      {state !== null ? (
+
+      {state?.user  !== undefined ? (
         <>
           <Link href="/user/dashboard">
             <a
@@ -48,7 +60,9 @@ const Nav = () => {
             Logout
           </a>
         </>
-      ) : (
+      ) :
+      
+       ( 
         <>
           <Link href="/login">
             <a
@@ -70,7 +84,7 @@ const Nav = () => {
             </a>
           </Link>
         </>
-      )}
+      ) }
     </nav>
   );
 };
@@ -79,12 +93,3 @@ export default Nav;
 
 
 
-export async function getServerSideProps(ctx) {
-  const { token } = await authPage(ctx);
-
-  return {
-      props: {
-          token
-      }
-  }
-}
