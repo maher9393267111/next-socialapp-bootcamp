@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Modal } from "antd";
 import Link from "next/link";
 import AuthForm from "../components/forms/AuthForm";
 import { useRouter } from "next/router";
-
+import { UserContext } from "../context";
 const Login = () => {
   const [email, setEmail] = useState("ryan@gmail.com");
   const [password, setPassword] = useState("rrrrrr");
   const [loading, setLoading] = useState(false);
-
+  const [state, setState] = useContext(UserContext);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -25,6 +25,16 @@ const Login = () => {
           password,
         }
       );
+
+         // update context
+         setState({
+          user: data.user,
+          token: data.token,
+        });
+        // save in local storage
+        window.localStorage.setItem("auth", JSON.stringify(data));
+
+
       console.log(data);
       setLoading(false);
       toast.success("Successfully logged in");
