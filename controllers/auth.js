@@ -1,10 +1,11 @@
 
-import User from "../models/user";
+import {User} from "../models/user";
 import { hashPassword, comparePassword } from "../helpers/auth";
 
 export const register = async (req, res) => {
   //  console.log("REGISTER ENDPOINT => ", req.body);
   const { name, email, password, secret } = req.body;
+  console.log('req body', req.body);
   // validation
   if (!name) return res.status(400).send("Name is required");
   if (!password || password.length < 6)
@@ -18,6 +19,7 @@ export const register = async (req, res) => {
   const hashedPassword = await hashPassword(password);
 
   const user = new User({ name, email, password: hashedPassword, secret });
+  console.log('user da=ta', user);
   try {
     await user.save();
     console.log("REGISTERED USE => ", user);
@@ -26,6 +28,9 @@ export const register = async (req, res) => {
     });
   } catch (err) {
     console.log("REGISTER FAILED => ", err);
-    return res.status(400).send("Error. Try again.");
+    return res.status(400).send({
+    message :err.message,
+
+    });
   }
 };

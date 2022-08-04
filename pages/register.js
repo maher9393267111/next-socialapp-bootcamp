@@ -7,6 +7,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [secret, setSecret] = useState("");
+  const [ok ,setOk]  = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,8 +19,13 @@ const Register = () => {
         password,
         secret,
       })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then((res) => {console.log(res)
+      
+        setOk(res.ok);
+      toast.success("Successfully registered")})
+      .catch((err) => {  console.log(err)
+      toast.error(err)
+      });
   };
 
   return (
