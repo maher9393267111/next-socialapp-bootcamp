@@ -69,3 +69,27 @@ export const postsByUser = async (req, res) => {
     console.log(err);
   }
 };
+
+
+// postbyid
+
+export const postById = async (req, res) => {
+
+  const { postid } = req.query;
+  console.log("postid => ", postid);
+
+  try {
+    const post = await Post.findById(postid)
+      .populate("postedBy", "_id name image")
+      .populate("comments.postedBy", "_id name image");
+    res.json(post);
+  }
+  catch (err) {
+    res.sendStatus(400).json({
+      error: err.message,
+    });
+  }
+
+
+
+}

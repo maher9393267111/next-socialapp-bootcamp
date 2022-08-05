@@ -2,17 +2,21 @@ import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context";
 import axios from "axios";
+import PostList from "../../components/cards/PostList";
 import { server } from "../../config/url.js";
 import { authPage } from "../../middlewares/auth";
 import CreatePostForm from "../../components/forms/CreatePostForm";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+
 const Dashboard = ({ token }) => {
   const [state, setState] = useContext(UserContext);
   const [user, setUser] = useState({});
   const [image, setImage] = useState('');
   const [imagesend, setImagesend] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [posts, setPosts] = useState([]);
+
   console.log("token----", token);
 
   useEffect(() => {
@@ -58,6 +62,8 @@ const Dashboard = ({ token }) => {
       } else {
         toast.success("Post created");
         setContent("");
+        setImage("");
+        getUserPosts();
       }
     } catch (err) {
       console.log(err);
@@ -75,7 +81,8 @@ const Dashboard = ({ token }) => {
       },
     });
 
-    console.log("user posts => ", data);
+    console.log("user posts ======> ", data);
+    setPosts(data);
 
   }
 
@@ -153,6 +160,9 @@ try {
               uploading={uploading}
               image={image}
             />
+                <br />
+
+            <PostList posts={posts} />
           </div>
 
 
