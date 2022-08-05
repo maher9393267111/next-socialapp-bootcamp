@@ -17,6 +17,8 @@ const Dashboard = ({ token }) => {
 
   useEffect(() => {
     getuser();
+    getUserPosts();
+
   }, []);
 
   const getuser = async () => {
@@ -63,7 +65,21 @@ const Dashboard = ({ token }) => {
   };
 
 
- 
+ // get user posts
+
+  const getUserPosts = async () => {
+
+    const {data} = await axios.get("/api/user/user-posts", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("user posts => ", data);
+
+  }
+
+
 
 
 
