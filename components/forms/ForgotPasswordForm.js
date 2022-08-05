@@ -40,7 +40,7 @@ const ForgotnewPasswordForm = ({
 
             <select className="form-control">
               <option>What is your favourite color?</option>
-              <option>What is your best friend's name?</option>
+              <option>What is your best friends name?</option>
               <option>What city were you born?</option>
             </select>
           </div>
