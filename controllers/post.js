@@ -99,17 +99,15 @@ export const postById = async (req, res) => {
 
 export  const isOwner = async (req, res ,next) => {
 
-//console.log("req.user._id => ", req.user._id);
 
-  // find post by id then check if user is owner of post
   try {
     const { postid } = req.query;
-    console.log("postid in Owner middllware => ", postid);
+   // console.log("postid in Owner middllware => ", postid);
 const post = await Post.findById(postid).populate("postedBy", "_id name image");
     if (post.postedBy._id.toString() !== req.user._id.toString()) {
      
-      console.log('post user _id => ', post.postedBy._id , 'req user _id => ', req.user._id);
-      console.log("user is not owner of post");
+    //  console.log('post user _id => ', post.postedBy._id , 'req user _id => ', req.user._id);
+    //  console.log("user is not owner of post");
       return res.status(403).json({
         error: "User is not owner of post",
       });
@@ -140,6 +138,26 @@ export const UpdatePost = async (req, res) => {
   // console.log("post update controller => ", req.body);
   try {
     const { postid } = req.query;
+
+// delete old image if new image is uploaded and old image is not deleted from cloudinary
+    if (req.body.image) {
+      const postbefore = await Post.findById(postid);
+      if (postbefore.image.public_id) {
+        await cloudinary.v2.uploader.destroy(postbefore.image.public_id).then(
+          (result) => {
+            console.log("deleted old image from cloudinary");
+          }
+        ).catch((err) => {
+          console.log(err);
+        }
+        );
+
+      }
+    }
+
+
+
+
     
     const post = await Post.findByIdAndUpdate(postid, req.body, {
       new: true,

@@ -5,6 +5,7 @@ import { useState,useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { authPage } from "../../../middlewares/auth"
 import PostForm from "../../../components/forms/CreatePostForm";
+import { toast } from "react-toastify";
 const PostId = ({id ,token}) => {
 const [post,setPost] = useState({})
 const [uploading,setUploading] = useState(false)
