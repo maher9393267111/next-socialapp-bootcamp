@@ -93,3 +93,60 @@ export const postById = async (req, res) => {
 
 
 }
+
+
+// can edit post if user is owner of post
+
+export  const isOwner = async (req, res ,next) => {
+
+//console.log("req.user._id => ", req.user._id);
+
+  // find post by id then check if user is owner of post
+  try {
+    const { postid } = req.query;
+    console.log("postid in Owner middllware => ", postid);
+const post = await Post.findById(postid).populate("postedBy", "_id name image");
+    if (post.postedBy._id.toString() !== req.user._id.toString()) {
+     
+      console.log('post user _id => ', post.postedBy._id , 'req user _id => ', req.user._id);
+      console.log("user is not owner of post");
+      return res.status(403).json({
+        error: "User is not owner of post",
+      });
+    }
+    else {
+      console.log('he is owner of post    ✔ ✔   ✔ ✔')
+      next();
+    }
+
+
+  }
+  catch (err) {
+    res.status(400).json({
+      error: err.message,
+    });
+  }
+
+
+
+
+}
+
+
+
+// update post
+
+export const UpdatePost = async (req, res) => {
+  // console.log("post update controller => ", req.body);
+  try {
+    const { postid } = req.query;
+    
+    const post = await Post.findByIdAndUpdate(postid, req.body, {
+      new: true,
+    });
+    console.log("post update controller => ", post);
+    res.json(post);
+  } catch (err) {
+    console.log(err);
+  }
+};
