@@ -1,3 +1,4 @@
+
 import { SyncOutlined } from "@ant-design/icons";
 
 const AuthForm = ({
@@ -12,8 +13,43 @@ const AuthForm = ({
   setSecret,
   loading,
   page,
+  username,
+  setUsername,
+  about,
+  setAbout,
+  profileUpdate,
 }) => (
   <form onSubmit={handleSubmit}>
+    {profileUpdate && (
+      <div className="form-group p-2">
+        <small>
+          <label className="text-muted">Username</label>
+        </small>
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          type="text"
+          className="form-control"
+          placeholder="Enter name"
+        />
+      </div>
+    )}
+
+    {profileUpdate && (
+      <div className="form-group p-2">
+        <small>
+          <label className="text-muted">About</label>
+        </small>
+        <input
+          value={about}
+          onChange={(e) => setAbout(e.target.value)}
+          type="text"
+          className="form-control"
+          placeholder="Write about yourself.."
+        />
+      </div>
+    )}
+
     {page !== "login" && (
       <div className="form-group p-2">
         <small>
@@ -39,6 +75,7 @@ const AuthForm = ({
         type="email"
         className="form-control"
         placeholder="Enter name"
+        disabled={profileUpdate}
       />
     </div>
 
@@ -63,7 +100,7 @@ const AuthForm = ({
           </small>
           <select className="form-control">
             <option>What is your favourite color?</option>
-            <option>What is your best friends name?</option>
+            <option>What is your best friend's name?</option>
             <option>What city you were born?</option>
           </select>
 
@@ -87,9 +124,11 @@ const AuthForm = ({
     <div className="form-group p-2">
       <button
         disabled={
-          page === "login"
-            ? !email || !password
-            : !name || !email || !secret || !password
+          profileUpdate
+            ? loading
+            : page === "login"
+            ? !email || !password || loading
+            : !name || !email || !secret || !password || loading
         }
         className="btn btn-primary col-12"
       >
@@ -100,3 +139,5 @@ const AuthForm = ({
 );
 
 export default AuthForm;
+
+
