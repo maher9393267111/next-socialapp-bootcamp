@@ -1,6 +1,6 @@
 import {Post } from "../models/post";
 import cloudinary from "cloudinary";
-
+import {User} from "../models/user";
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -214,3 +214,22 @@ export const deletePost = async (req, res) => {
 
 
 }
+
+
+
+export const newsFeed = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    let following = user.following;
+    following.push(req.user._id);
+
+    const posts = await Post.find({ postedBy: { $in: following } })
+      .populate("postedBy", "_id name image")
+      .sort({ createdAt: -1 })
+      .limit(10);
+
+    res.json(posts);
+  } catch (err) {
+    console.log(err);
+  }
+};
