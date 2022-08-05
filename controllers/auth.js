@@ -158,6 +158,13 @@ export const profileUpdate = async (req, res) => {
       data.secret = req.body.secret;
     }
 
+
+    if (req.body.image) {
+      data.image = req.body.image;
+    }
+
+
+
     let user = await User.findByIdAndUpdate(req.user._id, data, { new: true });
     // console.log('udpated user', user)
     user.password = undefined;
@@ -167,6 +174,21 @@ export const profileUpdate = async (req, res) => {
     if (err.code == 11000) {
       return res.json({ error: "Duplicate username" });
     }
+    console.log(err);
+  }
+};
+
+
+
+export const findPeople = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    // user.following
+    let following = user.following;
+    following.push(user._id);
+    const people = await User.find({ _id: { $nin: following } }).limit(10);
+    res.json(people);
+  } catch (err) {
     console.log(err);
   }
 };
