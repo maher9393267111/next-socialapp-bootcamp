@@ -183,7 +183,7 @@ export const profileUpdate = async (req, res) => {
 export const findPeople = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    console.log('user', user);
+  //  console.log('user', user);
     // user.following
     let following = user.following;
     following.push(user._id);

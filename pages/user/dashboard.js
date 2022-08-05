@@ -22,8 +22,9 @@ const [people, setPeople] = useState([]);
 
   useEffect(() => {
     getuser();
-    getUserPosts();
+    //getUserPosts();
     findPeople();
+    newsFeed();
 
   }, []);
 
@@ -75,18 +76,18 @@ const [people, setPeople] = useState([]);
 
  // get user posts
 
-  const getUserPosts = async () => {
+  // const getUserPosts = async () => {
 
-    const {data} = await axios.get("/api/user/user-posts", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  //   const {data} = await axios.get("/api/user/user-posts", {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
 
-    console.log("user posts ======> ", data);
-    setPosts(data);
+  //   console.log("nwessss posts ======> ", data);
+  //   setPosts(data);
 
-  }
+  // }
 
 
 
@@ -128,6 +129,10 @@ try {
   console.log(err.message);
 }
 }
+
+
+
+
 
 
 
@@ -199,6 +204,21 @@ const handleFollow = async (user) => {
   } catch (err) {
     console.log(err);
     toast.error( err)
+  }
+};
+
+
+const newsFeed = async () => {
+  try {
+    const { data } = await axios.get("/api/social/news-feed",{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+     console.log("user posts => ", data);
+    setPosts(data);
+  } catch (err) {
+    console.log(err);
   }
 };
 
