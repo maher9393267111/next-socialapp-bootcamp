@@ -13,7 +13,7 @@ const People = ({ people, handleFollow }) => {
     if (user.image) {
       return user.image.url;
     } else {
-      return "/images/logo.png";
+      return "/images/mylogo.png";
     }
   };
 
