@@ -8,6 +8,7 @@ import { authPage } from "../../middlewares/auth";
 import CreatePostForm from "../../components/forms/CreatePostForm";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import People from "../../components/cards/People";
 
 const Dashboard = ({ token }) => {
   const [state, setState] = useContext(UserContext);
@@ -16,12 +17,13 @@ const Dashboard = ({ token }) => {
   const [imagesend, setImagesend] = useState('');
   const [uploading, setUploading] = useState(false);
   const [posts, setPosts] = useState([]);
-
-  console.log("token----", token);
+const [people, setPeople] = useState([]);
+  //console.log("token----", token);
 
   useEffect(() => {
     getuser();
     getUserPosts();
+    findPeople();
 
   }, []);
 
@@ -37,7 +39,7 @@ const Dashboard = ({ token }) => {
         .then((res) => {
           //    console.log('res',res.data);
           setUser(res.data);
-          console.log("user------->", user);
+        //  console.log("user------->", user);
         });
     }
   };
@@ -154,6 +156,38 @@ const DeletePost = async(id) => {
 
 
 
+const findPeople = async () => {
+  // console.log("add this user to following list ", user);
+  try {
+    const { data } = await axios.get("/api/social/find-people",{
+     headers: {
+
+      Authorization: `Bearer ${token}`,
+     },
+    });
+    console.log("handle onother people to follow response => ", data);
+    setPeople(data);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+
+const handleFollow = async (user) => {
+  // console.log("add this user to following list ", user);
+  try {
+    const { data } = await axios.put("/api/social/find-people", { _id: user._id },{
+      headers : {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    console.log("handle follow response => ", data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
 
 
 
@@ -188,9 +222,10 @@ const DeletePost = async(id) => {
 
 
 
+          <div className="col-md-4">
+            <People people={people} handleFollow={handleFollow} />
+          </div>
 
-
-          <div className="col-md-4">Sidebar</div>
         </div>
       </div>
 
