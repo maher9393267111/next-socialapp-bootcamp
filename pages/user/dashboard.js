@@ -131,6 +131,26 @@ try {
 
 
 
+const DeletePost = async(id) => {
+//  e.preventDefault();
+   console.log("post DYnamiccccc => ", id);
+  try {
+    const { data } = await axios.delete(`/api/posts/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Delete post response => ", data);
+    if (data.error) {
+      toast.error(data.error);
+    } else {
+      toast.success("Post deleted");
+   
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 
 
@@ -159,10 +179,11 @@ try {
               handleImage={  handleImage3}
               uploading={uploading}
               image={image}
+         
             />
                 <br />
 
-            <PostList posts={posts} />
+            <PostList posts={posts}      DeletePost={DeletePost} />
           </div>
 
 

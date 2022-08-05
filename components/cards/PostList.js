@@ -7,7 +7,7 @@ import PostImage from "../images/PostImage";
 import { useContext } from "react";
 import { HeartOutlined, HeartFilled, CommentOutlined ,EditOutlined ,DeleteOutlined} from "@ant-design/icons";
 // Ryan
-const PostList = ({ posts }) => {
+const PostList = ({ posts , DeletePost }) => {
 
     const [state] = useContext(UserContext);
     const router = useRouter();
@@ -47,7 +47,11 @@ const PostList = ({ posts }) => {
                       onClick={() => router.push(`/user/post/${post._id}`)}
                       className="text-danger pt-2 h5 px-2 mx-auto"
                     />
-                    <DeleteOutlined className="text-danger pt-2 h5 px-2" />
+                    <DeleteOutlined className="text-danger pt-2 h5 px-2"
+                    
+                    onClick={() => {DeletePost(post._id) }}
+                    
+                    />
                   </>
                 )}
 
