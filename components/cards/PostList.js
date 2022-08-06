@@ -31,6 +31,9 @@ const PostList = ({
     <>
       {posts &&
         posts.map((post) => (
+          <div
+          key={post._id}
+          >
           <Post
             post={post}
             handleDelete={handleDelete}
@@ -38,6 +41,7 @@ const PostList = ({
             handleUnlike={handleUnlike}
             handleComment={handleComment}
           />
+          </div>
         ))}
     </>
   );
