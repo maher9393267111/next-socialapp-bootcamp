@@ -29,7 +29,7 @@ import { useRouter } from 'next/router'
   export function authPage(ctx) {
     return new Promise(resolve => {
         const allCookies = cookies(ctx);
-        console.log('ALLCOOKIES',allCookies);
+     //   console.log('ALLCOOKIES',allCookies);
 
         if(allCookies.auth) {
 

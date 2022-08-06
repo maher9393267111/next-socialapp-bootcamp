@@ -293,6 +293,11 @@ export const addComment = async (req, res) => {
   }
 };
 
+
+
+
+
+
 export const removeComment = async (req, res) => {
   try {
     const { postId, comment } = req.body;
@@ -304,6 +309,15 @@ export const removeComment = async (req, res) => {
       { new: true }
     );
     res.json(post);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const totalPosts = async (req, res) => {
+  try {
+    const total = await Post.find().estimatedDocumentCount();
+    res.json(total);
   } catch (err) {
     console.log(err);
   }

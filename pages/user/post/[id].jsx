@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { authPage } from "../../../middlewares/auth"
 import PostForm from "../../../components/forms/CreatePostForm";
 import { toast } from "react-toastify";
-const PostId = ({id ,token}) => {
+const PostSingle = ({id ,token}) => {
 const [post,setPost] = useState({})
 const [uploading,setUploading] = useState(false)
 const [image,setImage] = useState('')
@@ -133,7 +133,7 @@ const handleImage3 = async(e)=>{   // itis workkk
     );
 }
 
-export default PostId;
+export default PostSingle;
 
 
 export async function getServerSideProps(context) {
