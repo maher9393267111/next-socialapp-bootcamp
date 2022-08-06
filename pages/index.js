@@ -7,30 +7,68 @@ import { UserContext } from "../context";
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
-let socket = null;
+
 
 export default function Home() {
 
   const [state, setState] = useContext(UserContext);
+  const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    fetch('/api/socket').finally(() => {
-        socket = io();
+  const [socketis, setSocket] = useState(null)
+  const [text, setText] = useState("")
+  const [messages, setMessages] = useState([])
 
-        socket.emit('getStore');
 
-        socket.on('returnTest', () => {
-            alert("Works!");
-        });
+//   useEffect(() => {
+//     fetch('/api/socket').finally(() => {
+//         socket = io();
+
+//         socket.emit('getStore');
+
+//         socket.on('returnTest', () => {
+//             alert("Works!");
+//         });
+//     });
+// }, []);
+
+useEffect(() => {
+
+  // const socket = io('/api/socket');
+  // //socket.on('message', handleMessage)
+
+  // setSocket(socket)
+
+
+  fetch('/api/socket').finally(() => {
+   
+ const   socket = io();
+ setSocket(socket)
+       
+    socket.emit("notification", {
+      
+      message: `my name is ${state.name} `,
     });
-}, []);
 
-function testEmit() {
-    if (!socket) return;
+    
+          
+        });
 
-    socket.emit('test')
+
+
+  
+
+}, [])
+
+
+
+
+const sendMessage = () => {
+
+
+      socketis.emit('message-send', message);
+   console.log(message)
+
 }
-
 
 
 
@@ -45,8 +83,17 @@ function testEmit() {
 
    <div>
     <h1>hello
+
+      <input 
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+      type="text"
+      />
  
 
+<button
+onClick={sendMessage}
+>send Message</button>
 
 
     </h1>
