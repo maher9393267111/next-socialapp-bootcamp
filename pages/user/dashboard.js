@@ -11,7 +11,8 @@ import { useRouter } from "next/router";
 import People from "../../components/cards/People";
 import { Modal , Pagination } from "antd";
 import CommentForm from "../../components/forms/commentForm";
-
+import Search from "../../components/search";
+import Link from "next/link";
 const Dashboard = ({ token }) => {
   const [state, setState] = useContext(UserContext);
   const [user, setUser] = useState({});
@@ -229,6 +230,40 @@ const handleFollow = async (user) => {
 };
 
 
+const handleUnfollow = async (user) => {
+  // console.log("add this user to following list ", user);
+  try {
+    const { data } = await axios.post("/api/social/find-people", { _id: user._id },{
+      headers : {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    //console.log("handle follow response => ", data);
+
+    let auth = JSON.parse(localStorage.getItem("auth"));
+    auth.user = data;
+    localStorage.setItem("auth", JSON.stringify(auth));
+    // update context
+    setState({ ...state, user: data });
+    // update people state
+    let filtered = people.filter((p) => p._id !== user._id);
+    setPeople(filtered);
+    // rerender the posts in newsfeed
+    newsFeed();
+    toast.success(`UnFollowing ${user.name}`);
+
+
+  } catch (err) {
+    console.log(err);
+    toast.error( err)
+  }
+};
+
+
+
+
+
+
 const newsFeed = async () => {
   try {
     const { data } = await axios.get(`/api/social/news-feed?page=${page}`,{
@@ -383,6 +418,19 @@ console.log("change page => ", pagearg);
 
 
           <div className="col-md-4">
+          <Search token ={token} 
+          handleFollow ={ handleFollow}
+          handleUnfollow  ={handleUnfollow}
+
+          
+          
+          />
+            <br />
+            {state && state.user && state.user.following && (
+              <Link href={`/user/following`}>
+                <a className="h6">{state.user.following.length} Following</a>
+              </Link>
+            )}
             <People people={people} handleFollow={handleFollow} />
           </div>
 

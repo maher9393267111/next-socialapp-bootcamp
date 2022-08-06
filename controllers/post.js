@@ -223,6 +223,7 @@ export const newsFeed = async (req, res) => {
     let following = user.following;
     following.push(req.user._id);
     // pagination
+    // `/api/social/news-feed?page=${page}`
     const currentPage = req.query.page || 1;
     console.log("currentPage => 🚦🚦🚦 ", currentPage);
     const perPage = 3;
