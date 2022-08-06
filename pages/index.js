@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.css'
 import { useContext } from "react";
 import { UserContext } from "../context";
 import {toast} from "react-toastify";
+import { server } from "../config/url.js";
 
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
@@ -40,7 +41,7 @@ useEffect(() => {
   // setSocket(socket)
 
 
-  fetch('/api/socket').finally(() => {
+  fetch(`${server}/api/socket`).finally(() => {
    
  const   socket = io();
  setSocket(socket)
