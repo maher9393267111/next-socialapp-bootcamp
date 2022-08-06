@@ -273,3 +273,17 @@ export const searchUser = async (req, res) => {
     console.log(err);
   }
 };
+
+// PUBLIC PROFILE
+
+export const getUser = async (req, res) => {
+  try {
+    const { username } = req.query;
+    const user = await User.findOne({ username: username }).select(
+      "-password -secret"
+    );
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
