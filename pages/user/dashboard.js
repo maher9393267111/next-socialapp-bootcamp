@@ -315,6 +315,12 @@ const removeComment = async () => {
 
 
 
+const changePage = (pagearg) => {
+console.log("change page => ", pagearg);
+  setPage(pagearg);
+  console.log("page => ", page);
+}
+
 
 
 
@@ -356,9 +362,18 @@ const removeComment = async () => {
             
             />
   <Pagination
-              current={page}
-              total={(totalPosts / 3) * 10}
-              onChange={(value) => setPage(value)}
+        
+        defaultCurrent={page} 
+     //   total={totalPosts } 
+     total={(totalPosts / 2) * 10}
+
+              onChange={p => setPage(p)}
+            
+         
+             
+          
+
+
             />
 
 
