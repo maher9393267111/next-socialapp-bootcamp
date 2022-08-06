@@ -225,7 +225,10 @@ export const newsFeed = async (req, res) => {
     console.log("following => 🚨🚨🚨", following);
 
     const posts = await Post.find({ postedBy: { $in: following } })
-      .populate("postedBy", "_id name image")
+      .populate("postedBy", "_id name image").populate(
+        'comments.postedBy',
+        '_id name image'
+   )
       .sort({ createdAt: -1 })
       .limit(10);
 
@@ -282,9 +285,8 @@ export const addComment = async (req, res) => {
         $push: { comments: { text: comment, postedBy: req.user._id } },
       },
       { new: true }
-    )
-      .populate("postedBy", "_id name image")
-      .populate("comments.postedBy", "_id name image");
+    ) .populate("postedBy", "_id name image").populate('comments.postedBy', '_id name image')
+   
     res.json(post);
   } catch (err) {
     console.log(err);

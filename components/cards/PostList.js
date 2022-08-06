@@ -5,6 +5,7 @@ import { UserContext } from "../../context";
 import { useRouter } from "next/router";
 import PostImage from "../images/PostImage";
 import { useContext } from "react";
+import { imageSource } from "../../functions";
 import { HeartOutlined, HeartFilled, CommentOutlined ,EditOutlined ,DeleteOutlined } from "@ant-design/icons";
 // Ryan
 const PostList = ({ posts , DeletePost , handleLike, handleUnlike ,handleComment }) => {
@@ -68,7 +69,40 @@ const PostList = ({ posts , DeletePost , handleLike, handleUnlike ,handleComment
                 </>
               )}
             </div>
+
           </div>
+
+  {/* 2 comments */}
+
+<div>
+{post.comments && post.comments.length > 0 && (
+              <ol className="list-group">
+                {post.comments.slice(0, 2).map((c) => (
+                  <li className="list-group-item d-flex justify-content-between align-items-start">
+                    <div className="ms-2 me-auto">
+                      <div>
+                        <Avatar
+                          size={20}
+                          className="mb-1 mr-3"
+                          src={imageSource(c.postedBy)}
+                        />
+                        &nbsp;{c.postedBy.name}
+                      </div>
+                      <i className="text-muted">{c.text}</i>
+                    </div>
+                    <span className="badge rounded-pill text-muted">
+                      {moment(c.created).fromNow()}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            )}
+</div>
+
+
+
+
+
         </div>
       ))}
   </>
