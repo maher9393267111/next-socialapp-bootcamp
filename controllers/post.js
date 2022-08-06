@@ -222,15 +222,17 @@ export const newsFeed = async (req, res) => {
     const user = await User.findById(req.user._id);
     let following = user.following;
     following.push(req.user._id);
-    console.log("following => 🚨🚨🚨", following);
+    // pagination
+    const currentPage = req.query.page || 1;
+    console.log("currentPage => 🚦🚦🚦 ", currentPage);
+    const perPage = 3;
 
     const posts = await Post.find({ postedBy: { $in: following } })
-      .populate("postedBy", "_id name image").populate(
-        'comments.postedBy',
-        '_id name image'
-   )
+      .skip((currentPage - 1) * perPage)
+      .populate("postedBy", "_id name image")
+      .populate("comments.postedBy", "_id name image")
       .sort({ createdAt: -1 })
-      .limit(10);
+      .limit(perPage);
 
     res.json(posts);
   } catch (err) {
@@ -316,8 +318,14 @@ export const removeComment = async (req, res) => {
 
 export const totalPosts = async (req, res) => {
   try {
-    const total = await Post.find().estimatedDocumentCount();
-    res.json(total);
+
+// find number of posts
+
+const total = await Post.find({ postedBy: req.user._id }).countDocuments();
+
+ const  hello = 'my name is maher'
+    console.log("total posts Server here => ", total);
+    res.json(total , hello);
   } catch (err) {
     console.log(err);
   }

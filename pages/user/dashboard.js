@@ -9,7 +9,7 @@ import CreatePostForm from "../../components/forms/CreatePostForm";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import People from "../../components/cards/People";
-import { Modal } from "antd";
+import { Modal , Pagination } from "antd";
 import CommentForm from "../../components/forms/commentForm";
 
 const Dashboard = ({ token }) => {
@@ -26,16 +26,21 @@ const [people, setPeople] = useState([]);
   const [comment, setComment] = useState("");
   const [visible, setVisible] = useState(false);
   const [currentPost, setCurrentPost] = useState({});
+ // pagination
+ const [totalPosts, setTotalPosts] = useState(0);
+ const [page, setPage] = useState(1);
 
 
 
   useEffect(() => {
+    getTotalPosts()
     getuser();
-    //getUserPosts();
+   
     findPeople();
     newsFeed();
+  
 
-  }, []);
+  }, [state && state.token, page]);
 
   const getuser = async () => {
     //console.log('token',token);
@@ -75,7 +80,7 @@ const [people, setPeople] = useState([]);
         toast.success("Post created");
         setContent("");
         setImage("");
-        getUserPosts();
+       // getUserPosts();
       }
     } catch (err) {
       console.log(err);
@@ -83,20 +88,27 @@ const [people, setPeople] = useState([]);
   };
 
 
- // get user posts
+ //get total  posts
 
-  // const getUserPosts = async () => {
+  const getTotalPosts = async () => {
+    try{
 
-  //   const {data} = await axios.get("/api/user/user-posts", {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
+    const {data} = await axios.get("/api/posts/totalposts",{
+      headers:{
+        Authorization: `Bearer ${token}`
+      },
+    });
 
-  //   console.log("nwessss posts ======> ", data);
-  //   setPosts(data);
+    console.log("totla posts 🚦🚦🚦🚦  ======> ", data);
+    setTotalPosts(data);
+    console.log("total posts ======> 🧪🧪🧪🧪", totalPosts);
+    }
 
-  // }
+    catch(err){
+      console.log(err?.message);
+    }
+
+  }
 
 
 
@@ -156,7 +168,7 @@ const DeletePost = async(id) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("Delete post response => ", data);
+   // console.log("Delete post response => ", data);
     if (data.error) {
       toast.error(data.error);
     } else {
@@ -179,7 +191,7 @@ const findPeople = async () => {
       Authorization: `Bearer ${token}`,
      },
     });
-    console.log("handle onother people to follow response => ", data);
+   // console.log("handle onother people to follow response => ", data);
     setPeople(data);
   } catch (err) {
     console.log(err.message);
@@ -195,7 +207,7 @@ const handleFollow = async (user) => {
         Authorization: `Bearer ${token}`,
       }
     });
-    console.log("handle follow response => ", data);
+    //console.log("handle follow response => ", data);
 
     let auth = JSON.parse(localStorage.getItem("auth"));
     auth.user = data;
@@ -219,13 +231,14 @@ const handleFollow = async (user) => {
 
 const newsFeed = async () => {
   try {
-    const { data } = await axios.get("/api/social/news-feed",{
+    const { data } = await axios.get(`/api/social/news-feed?page=${page}`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-     console.log("user posts => ", data);
+   //  console.log("user posts => ", data);
     setPosts(data);
+    console.log("posts => ", posts);
   } catch (err) {
     console.log(err);
   }
@@ -287,7 +300,7 @@ const addComment = async (e) => {
       },
     }
     );
-    console.log("add comment", data);
+ //   console.log("add comment", data);
     setComment("");
     setVisible(false);
     newsFeed();
@@ -316,7 +329,7 @@ const removeComment = async () => {
      <div className="container-fluid">
         <div className="row py-5 text-light bg-default-image">
           <div className="col text-center">
-            <h1>Newsfeed</h1>
+            <h1>Newsfeed  </h1>
           </div>
         </div>
 
@@ -334,6 +347,7 @@ const removeComment = async () => {
          
             />
                 <br />
+                {totalPosts}   {page}
 
             <PostList posts={posts}      DeletePost={DeletePost}
             handleUnlike ={handleUnlike}
@@ -341,6 +355,14 @@ const removeComment = async () => {
             handleComment={handleComment}
             
             />
+  <Pagination
+              current={page}
+              total={(totalPosts / 3) * 10}
+              onChange={(value) => setPage(value)}
+            />
+
+
+
           </div>
 
 
