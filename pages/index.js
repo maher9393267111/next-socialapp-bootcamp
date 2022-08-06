@@ -3,6 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useContext } from "react";
 import { UserContext } from "../context";
+import {toast} from "react-toastify";
 
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
@@ -17,7 +18,7 @@ export default function Home() {
   const [socketis, setSocket] = useState(null)
   const [text, setText] = useState("")
   const [messages, setMessages] = useState([])
-
+const [reciver, setReciver] = useState("")
 
 //   useEffect(() => {
 //     fetch('/api/socket').finally(() => {
@@ -67,6 +68,15 @@ const sendMessage = () => {
 
       socketis.emit('message-send', message);
    console.log(message)
+
+   socketis.on('recive-msg', (msg) => {
+    toast.success(msg)
+    console.log('reciver ==>',msg)
+    setReciver(msg)
+
+   // setMessages([...messages, message])
+  }
+  )
 
 }
 

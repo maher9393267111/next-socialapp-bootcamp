@@ -8,8 +8,13 @@ const ioHandler = (req, res) => {
             console.log(`  -> ${socket.id} connected`);
         
             socket.on('message-send', (message) => {
-                io.emit('returnTest');
+                
             console.log('message received  from client ', message);
+
+        // after receiving message from client, Send==> {emit} message to all clients
+
+        io.emit('recive-msg', `${message} sended from socket io`);
+
             });
 
 socket.on('notification',(name)=>{
