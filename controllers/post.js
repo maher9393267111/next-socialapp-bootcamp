@@ -234,3 +234,4 @@ export const newsFeed = async (req, res) => {
     console.log(err);
   }
 };
+
