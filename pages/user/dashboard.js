@@ -9,6 +9,8 @@ import CreatePostForm from "../../components/forms/CreatePostForm";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import People from "../../components/cards/People";
+import { Modal } from "antd";
+import CommentForm from "../../components/forms/CommentForm";
 
 const Dashboard = ({ token }) => {
   const [state, setState] = useContext(UserContext);
@@ -19,6 +21,13 @@ const Dashboard = ({ token }) => {
   const [posts, setPosts] = useState([]);
 const [people, setPeople] = useState([]);
   //console.log("token----", token);
+
+  // comments
+  const [comment, setComment] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [currentPost, setCurrentPost] = useState({});
+
+
 
   useEffect(() => {
     getuser();
@@ -258,6 +267,42 @@ const handleUnlike = async (_id) => {
 
 
 
+const handleComment = (post) => {
+  setCurrentPost(post);
+  setVisible(true);
+};
+
+const addComment = async (e) => {
+  e.preventDefault();
+  // console.log("add comment to this post id", currentPost._id);
+  // console.log("save comment to db", comment);
+  try {
+    const { data } = await axios.post("/api/social/comment", {
+      postId: currentPost._id,
+      comment,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    );
+    console.log("add comment", data);
+    setComment("");
+    setVisible(false);
+    newsFeed();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const removeComment = async () => {
+  //
+};
+
+
+
+
 
 
 
@@ -293,6 +338,7 @@ const handleUnlike = async (_id) => {
             <PostList posts={posts}      DeletePost={DeletePost}
             handleUnlike ={handleUnlike}
             handleLike={handleLike}
+            handleComment={handleComment}
             
             />
           </div>
@@ -304,6 +350,24 @@ const handleUnlike = async (_id) => {
           </div>
 
         </div>
+
+
+        <Modal
+          visible={visible}
+          onCancel={() => setVisible(false)}
+          title="Comment"
+          footer={null}
+        >
+          <CommentForm
+            comment={comment}
+            setComment={setComment}
+            addComment={addComment}
+          />
+        </Modal>
+
+
+
+
       </div>
 
 

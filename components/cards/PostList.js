@@ -5,9 +5,9 @@ import { UserContext } from "../../context";
 import { useRouter } from "next/router";
 import PostImage from "../images/PostImage";
 import { useContext } from "react";
-import { HeartOutlined, HeartFilled, CommentOutlined ,EditOutlined ,DeleteOutlined} from "@ant-design/icons";
+import { HeartOutlined, HeartFilled, CommentOutlined ,EditOutlined ,DeleteOutlined } from "@ant-design/icons";
 // Ryan
-const PostList = ({ posts , DeletePost , handleLike, handleUnlike  }) => {
+const PostList = ({ posts , DeletePost , handleLike, handleUnlike ,handleComment }) => {
 
     const [state] = useContext(UserContext);
     const router = useRouter();
@@ -49,7 +49,10 @@ const PostList = ({ posts , DeletePost , handleLike, handleUnlike  }) => {
               <div className="pt-2 pl-3" style={{ marginRight: "1rem" }}>
                 {post.likes.length} likes
               </div>
-              <CommentOutlined className="text-danger pt-2 h5 px-2" />
+              <CommentOutlined
+               onClick={() => handleComment(post)}
+              
+              className="text-danger pt-2 h5 px-2" />
               <div className="pt-2 pl-3">2 comments</div>
 
               {state && state.user && state.user._id === post.postedBy._id && (
