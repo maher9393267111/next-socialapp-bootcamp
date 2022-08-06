@@ -15,7 +15,7 @@ import { UserContext } from "../../context";
 import { useRouter } from "next/router";
 import { imageSource } from "../../functions";
 import Link from "next/link";
-import Post from "../../components/cards/Post";
+import Post from "../../components/cards/post";
 
 const PostList = ({
   posts,

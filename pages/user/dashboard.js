@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import People from "../../components/cards/People";
 import { Modal } from "antd";
-import CommentForm from "../../components/forms/CommentForm";
+import CommentForm from "../../components/forms/commentForm";
 
 const Dashboard = ({ token }) => {
   const [state, setState] = useContext(UserContext);
