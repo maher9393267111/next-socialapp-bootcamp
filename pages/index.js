@@ -4,9 +4,35 @@ import styles from '../styles/Home.module.css'
 import { useContext } from "react";
 import { UserContext } from "../context";
 
+import { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+
+let socket = null;
+
 export default function Home() {
 
   const [state, setState] = useContext(UserContext);
+
+  useEffect(() => {
+    fetch('/api/socket').finally(() => {
+        socket = io();
+
+        socket.emit('getStore');
+
+        socket.on('returnTest', () => {
+            alert("Works!");
+        });
+    });
+}, []);
+
+function testEmit() {
+    if (!socket) return;
+
+    socket.emit('test')
+}
+
+
+
 
 
   return (
