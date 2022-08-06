@@ -220,7 +220,45 @@ const newsFeed = async () => {
   } catch (err) {
     console.log(err);
   }
+
+
 };
+
+
+
+const handleLike = async (_id) => {
+  // console.log("like this post => ", _id);
+  try {
+    const { data } = await axios.post("/api/social/like-post", { _id }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // console.log("liked", data);
+    newsFeed();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const handleUnlike = async (_id) => {
+  // console.log("unlike this post => ", _id);
+  try {
+    const { data } = await axios.post("/api/social/unlike-post", { _id },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // console.log("unliked", data);
+    newsFeed();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+
+
 
 
 
@@ -252,7 +290,11 @@ const newsFeed = async () => {
             />
                 <br />
 
-            <PostList posts={posts}      DeletePost={DeletePost} />
+            <PostList posts={posts}      DeletePost={DeletePost}
+            handleUnlike ={handleUnlike}
+            handleLike={handleLike}
+            
+            />
           </div>
 
 
